@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Is it a panda</title>
+    <title>Does it contain steg?</title>
     <style>
         .no-margin-ul {
             margin: 0;
@@ -15,11 +15,11 @@
     </style>
 </head>
 <body>
-    <h2>Is it a panda?</h2>
-    <h2>Danielle Turner, David Higley, Joseph Shapiro</h2>
+    <h2>Does it contain steg?</h2>
+    <h2>Leif, Jack, Griffin</h2>
     <input type="file" name="Image" onchange="inputChanged(event)" autocomplete="off">
     <p>
-        Current status: <span id="status-output">Loading model and scripts</span>
+        Current status: <span id="status-output">Waiting for file</span>
     </p>
     <p>
         Model output: <span id="model-output"></span>
@@ -37,14 +37,13 @@
         ]
 
         const modelClasses = [
-            "not a panda",
-            "panda",
-            "red panda"
+            "not stegged",
+            "stegged"
         ]
 
         const statusOutput = document.getElementById("status-output")        
 
-        async function getImageTensorFromPath(path, dims =  [1, 3, 32, 32]) {
+        async function getImageTensorFromPath(path, dims =  [1, 3, 100, 100]) {
             // 1. load the image  
             var image = await loadImagefromPath(path, dims[2], dims[3]);
             // 2. convert to tensor
@@ -66,12 +65,12 @@
                 // skip data[i + 3] to filter out the alpha channel
             }
 
-            // 3. Concatenate RGB to transpose [224, 224, 3] -> [3, 224, 224] to a number array
+            // 3. Concatenate RGB to transpose [100, 100, 3] -> [3, 100, 100] to a number array
             const transposedData = redArray.concat(greenArray).concat(blueArray);
 
             // 4. convert to float32
             let i, l = transposedData.length; // length, we need this for the loop
-            // create the Float32Array size 3 * 224 * 224 for these dimensions output
+            // create the Float32Array size 3 * 100 * 100 for these dimensions output
             const float32Data = new Float32Array(dims[1] * dims[2] * dims[3]);
             for (i = 0; i < l; i++) {
                 float32Data[i] = ((transposedData[i] / 255.0) - 0.5) / 0.5; // convert to float and normalize
@@ -83,7 +82,7 @@
         }
 
         
-        async function loadImagefromPath(path, width = 32, height = 32) {
+        async function loadImagefromPath(path, width = 100, height = 100) {
             // Use Jimp to load the image and resize it.
             var imageData = await Jimp.read(path).then((imageBuffer) => {
                 return imageBuffer.cover(width, height);
@@ -125,7 +124,7 @@
 
         async function inference(path) {
             try {
-                const session = await ort.InferenceSession.create('./finalProject_model.onnx');
+                const session = await ort.InferenceSession.create('finalProject_model.onnx');
 
                 const imageTensor = await getImageTensorFromPath(path);
 
@@ -185,3 +184,4 @@
     </script>
 </body>
 </html>
+
