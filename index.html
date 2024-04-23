@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Does it contain steg?</title>
+    <title>Is it a panda</title>
     <style>
         .no-margin-ul {
             margin: 0;
@@ -15,8 +15,8 @@
     </style>
 </head>
 <body>
-    <h2>Does it contain steg?</h2>
-    <h2>Leif ,Jack, Griffin</h2>
+    <h2>Is it a panda?</h2>
+    <h2>Danielle Turner, David Higley, Joseph Shapiro</h2>
     <input type="file" name="Image" onchange="inputChanged(event)" autocomplete="off">
     <p>
         Current status: <span id="status-output">Loading model and scripts</span>
@@ -37,8 +37,9 @@
         ]
 
         const modelClasses = [
-            "stegged"
-            "not stegged"
+            "not a panda",
+            "panda",
+            "red panda"
         ]
 
         const statusOutput = document.getElementById("status-output")        
