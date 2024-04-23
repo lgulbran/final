@@ -124,7 +124,7 @@
 
         async function inference(path) {
             try {
-                const session = await ort.InferenceSession.create('./finalProject_model.onnx');
+                const session = await ort.InferenceSession.create('finalProject_model.onnx');
 
                 const imageTensor = await getImageTensorFromPath(path);
 
