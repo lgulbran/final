@@ -68,13 +68,10 @@
             // 3. Concatenate RGB to transpose [100, 100, 3] -> [3, 100, 100] to a number array
             const transposedData = redArray.concat(greenArray).concat(blueArray);
 
-            // 4. convert to float32
-            let i, l = transposedData.length; // length, we need this for the loop
-            // create the Float32Array size 3 * 100 * 100 for these dimensions output
-            const float32Data = new Float32Array(dims[1] * dims[2] * dims[3]);
-            for (i = 0; i < l; i++) {
-                float32Data[i] = ((transposedData[i] / 255.0); // convert to float and normalize
-            }
+            // 4. create the tensor object from onnxruntime-web.
+            const inputTensor = new ort.Tensor("uint8", transposedData, dims);
+            console.log(inputTensor);
+            return inputTensor;
             // 5. create the tensor object from onnxruntime-web.
             const inputTensor = new ort.Tensor("float32", float32Data, dims);
             console.log(inputTensor)
@@ -149,7 +146,7 @@
         async function inputChanged(event) {
             statusOutput.textContent = statusDict[1];
             const inferenceResult = await inference(URL.createObjectURL(event.target.files[0]));
-            const predictedClass = inferenceResult[0] >= 0.5 ? "Stegged" : "Not stegged";
+            const predictedClass = inferenceResult[0] >= 1 ? "Stegged" : "Not stegged";
 
             document.getElementById("model-output").textContent = "Predicted Class: " + predictedClass;
 
