@@ -82,7 +82,7 @@
         }
 
         
-        async function loadImagefromPath(path, width = 100, height = 100) {
+        async function loadImagefromPath(path) {
             // Use Jimp to load the image and resize it.
             var imageData = await Jimp.read(path).then((imageBuffer) => {
                 return imageBuffer.cover(width, height);
