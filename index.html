@@ -37,8 +37,8 @@
         ]
 
         const modelClasses = [
-            "0",
-            "1"
+            "Not stegged", // Represents class 0
+            "Stegged"      // Represents class 1
         ]
 
         const statusOutput = document.getElementById("status-output")        
@@ -149,34 +149,10 @@
         async function inputChanged(event) {
             statusOutput.textContent = statusDict[1];
             const inferenceResult = await inference(URL.createObjectURL(event.target.files[0]));
-            const inferenceResultClasses = sortedClasses(inferenceResult);
+            const predictedClass = inferenceResult[0] >= 0.5 ? "Stegged" : "Not stegged";
 
-            document.getElementById("model-output").replaceChildren();
+            document.getElementById("model-output").textContent = "Predicted Class: " + predictedClass;
 
-            for (index in inferenceResultClasses) {
-                const outputTitle = document.createElement("span");
-                const outputData = document.createElement("ul");
-                const dataClassId = document.createElement("li");
-                const dataClassProb = document.createElement("li");
-                const outputSpacer = document.createElement("br");
-
-                if (index == 0) {
-                    outputTitle.classList.add("bold");
-                }
-                outputData.classList.add("no-margin-ul");
-                
-                outputTitle.textContent = inferenceResultClasses[index].name;
-                dataClassId.textContent = `Class id: ${inferenceResultClasses[index].index}`;
-                dataClassProb.textContent = `Probability: ${inferenceResultClasses[index].probability.toFixed(4)}`;
-
-                outputData.appendChild(dataClassId);
-                outputData.appendChild(dataClassProb);
-
-                document.getElementById("model-output").appendChild(outputSpacer);
-                document.getElementById("model-output").appendChild(outputTitle);
-                document.getElementById("model-output").appendChild(outputData);
-            }
-            // document.getElementById("model-output").textContent = inferenceResult;
             statusOutput.textContent = statusDict[3];
         }
 
@@ -184,4 +160,5 @@
     </script>
 </body>
 </html>
+
 
