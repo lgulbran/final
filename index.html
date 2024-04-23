@@ -73,7 +73,7 @@
             // create the Float32Array size 3 * 100 * 100 for these dimensions output
             const float32Data = new Float32Array(dims[1] * dims[2] * dims[3]);
             for (i = 0; i < l; i++) {
-                float32Data[i] = ((transposedData[i] / 255.0) - 0.5) / 0.5; // convert to float and normalize
+                float32Data[i] = ((transposedData[i] / 255.0); // convert to float and normalize
             }
             // 5. create the tensor object from onnxruntime-web.
             const inputTensor = new ort.Tensor("float32", float32Data, dims);
