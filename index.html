@@ -80,7 +80,10 @@
             const image = new Image();
             image.src = canvas.toDataURL();
 
-            document.body.appendChild(image);
+            // Append the image to the result container
+            const resultContainer = document.getElementById("result-container");
+            resultContainer.innerHTML = ""; // Clear previous result
+            resultContainer.appendChild(image);
         }
     </script>
 </body>
