@@ -25,7 +25,6 @@
         Model output: <span id="model-output"></span>
     </p>
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jimp/0.22.10/jimp.min.js" integrity="sha512-I7QM5mEu+5AZVAE1kZqUs1gihBFmO7h0JF6sMh5kPCatn/J2PsdsCMCtZ3FNMbutSV9WK7CSGUDukY9+MggvLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
     <script>
@@ -41,7 +40,7 @@
             "Stegged"      // Represents class 1
         ]
 
-        const statusOutput = document.getElementById("status-output")        
+        const statusOutput = document.getElementById("status-output");
 
         async function getImageTensorFromPath(path, dims =  [1, 3, 100, 100]) {
             // 1. load the image  
@@ -53,30 +52,29 @@
         }
 
         function imageDataToTensor(image, dims) {
-        // 1. Get buffer data from image and create R, G, and B arrays.
+            // 1. Get buffer data from image and create R, G, and B arrays.
             var imageBufferData = image.bitmap.data;
             const [redArray, greenArray, blueArray] = new Array(new Array(), new Array(), new Array());
 
-    // 2. Loop through the image buffer and extract the R, G, and B channels
-        for (let i = 0; i < imageBufferData.length; i += 4) {
-            redArray.push(imageBufferData[i]);
-            greenArray.push(imageBufferData[i + 1]);
-            blueArray.push(imageBufferData[i + 2]);
-        // skip data[i + 3] to filter out the alpha channel
-    }
+            // 2. Loop through the image buffer and extract the R, G, and B channels
+            for (let i = 0; i < imageBufferData.length; i += 4) {
+                redArray.push(imageBufferData[i]);
+                greenArray.push(imageBufferData[i + 1]);
+                blueArray.push(imageBufferData[i + 2]);
+                // skip data[i + 3] to filter out the alpha channel
+            }
 
-    // 3. Concatenate RGB to transpose [100, 100, 3] -> [3, 100, 100] to a number array
-    const transposedData = redArray.concat(greenArray).concat(blueArray);
+            // 3. Concatenate RGB to transpose [100, 100, 3] -> [3, 100, 100] to a number array
+            const transposedData = redArray.concat(greenArray).concat(blueArray);
 
-    // 4. Create the tensor object from onnxruntime-web without converting to float32
-    const inputTensor = new ort.Tensor("uint8", new Uint8Array(transposedData), dims);
-    return inputTensor;
-}
+            // 4. Create the tensor object from onnxruntime-web without converting to float32
+            const inputTensor = new ort.Tensor("uint8", new Uint8Array(transposedData), dims);
+            return inputTensor;
+        }
 
 
-        
         async function loadImagefromPath(path) {
-        // Use Jimp to load the image without resizing
+            // Use Jimp to load the image without resizing
             var imageData = await Jimp.read(path);
             return imageData;
         }
@@ -150,3 +148,4 @@
     </script>
 </body>
 </html>
+
