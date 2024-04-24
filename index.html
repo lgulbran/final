@@ -39,24 +39,25 @@
             statusOutput.textContent = statusDict[1];
             const inferenceResult = await inference(URL.createObjectURL(event.target.files[0]));
 
-            // Assuming inferenceResult is a tensor
-            createImageFromTensor(inferenceResult);
-
             // Update the model output here if needed
-            modelOutput.textContent = "Image loaded and displayed.";
+            modelOutput.textContent = "Performing inference...";
+
+            // Assuming inferenceResult is a tensor
+            displayPredictionResult(inferenceResult);
 
             statusOutput.textContent = statusDict[3];
         }
 
-        function createImageFromTensor(imageTensor) {
-            const [batchSize, numChannels, height, width] = imageTensor.dims;
+        function displayPredictionResult(inferenceResult) {
+            // Example: Convert the tensor to an image and display it
+            const [batchSize, numChannels, height, width] = inferenceResult.dims;
 
             const canvas = document.createElement('canvas');
             canvas.width = width;
             canvas.height = height;
             const ctx = canvas.getContext('2d');
 
-            const imageData = imageTensor.data;
+            const imageData = inferenceResult.data;
 
             const imageDataObject = ctx.createImageData(width, height);
 
@@ -81,7 +82,7 @@
             image.src = canvas.toDataURL();
 
             // Append the image to the result container
-            const resultContainer = document.getElementById("result-container");
+            const resultContainer = document.getElementById("model-output");
             resultContainer.innerHTML = ""; // Clear previous result
             resultContainer.appendChild(image);
         }
