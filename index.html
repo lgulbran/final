@@ -77,8 +77,8 @@
         
         async function loadImagefromPath(path) {
         // Use Jimp to load the image without resizing
-        var imageData = await Jimp.read(path);
-        return imageData;
+            var imageData = await Jimp.read(path);
+            return imageData;
         }
 
         const isTypedArray = (function() {
